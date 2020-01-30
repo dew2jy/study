@@ -2,12 +2,16 @@ package com.example.demo.events;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 //lombok 애노테이션은 메타애노테이션으로 쓸 수 없음..
 @Builder @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter @EqualsAndHashCode(of = "id")
+@Entity
 public class Event {
+    @Id
+    @GeneratedValue
     private Integer id;
     private String name;
     private String description;
@@ -21,6 +25,7 @@ public class Event {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
+    @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
 
 }
