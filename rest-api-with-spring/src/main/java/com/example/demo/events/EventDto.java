@@ -1,18 +1,17 @@
 package com.example.demo.events;
 
-import lombok.*;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
-//lombok 애노테이션은 메타애노테이션으로 쓸 수 없음..
-@Builder @AllArgsConstructor @NoArgsConstructor
-@Getter @Setter @EqualsAndHashCode(of = "id")
-@Entity
-public class Event {
-    @Id
-    @GeneratedValue
-    private Integer id;
+@Builder @NoArgsConstructor @AllArgsConstructor
+@Data
+public class EventDto {
+    //Event 엔티티에 애노테이션 존많문... 그래서 입력값만 분리...
     private String name;
     private String description;
     private LocalDateTime beginEnrollmentDateTime;
@@ -23,9 +22,4 @@ public class Event {
     private int basePrice; // (optional)
     private int maxPrice; // (optional)
     private int limitOfEnrollment;
-    private boolean offline;
-    private boolean free;
-    @Enumerated(EnumType.STRING)
-    private EventStatus eventStatus = EventStatus.DRAFT;
-
 }
