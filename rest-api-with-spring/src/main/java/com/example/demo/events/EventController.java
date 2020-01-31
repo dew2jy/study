@@ -1,5 +1,6 @@
 package com.example.demo.events;
 
+import com.example.demo.common.ErrorsResource;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.hateoas.Link;
@@ -37,12 +38,12 @@ public class EventController {
     @PostMapping
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
         if(errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(errors);    //바디에 에러를 담음 하지만 javabean 스펙을 준수하지 않기 때문에 json으로 변환할 수 없음 => 에러 발생
+            return badRequest(errors);
         }
 
         eventValidator.validate(eventDto, errors);
         if(errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(errors);
+            return badRequest(errors);
         }
 
         Event event = modelMapper.map(eventDto, Event.class);
@@ -55,5 +56,9 @@ public class EventController {
         eventResource.add(selfLinkBuilder.withRel("update-event"));
         eventResource.add(new Link("/docs/index.html#resources-events-create").withRel("profile"));
         return ResponseEntity.created(createdUri).body(eventResource);
+    }
+
+    private ResponseEntity badRequest(Errors errors) {
+        return ResponseEntity.badRequest().body(new ErrorsResource(errors));    //바디에 에러를 담음 하지만 javabean 스펙을 준수하지 않기 때문에 json으로 변환할 수 없음 => 에러 발생
     }
 }
