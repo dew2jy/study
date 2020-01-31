@@ -3,8 +3,6 @@ package com.example.demo.events;
 import com.example.demo.common.ErrorsResource;
 import lombok.var;
 import org.modelmapper.ModelMapper;
-
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -17,7 +15,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 import java.net.URI;
 import java.util.Optional;
 
