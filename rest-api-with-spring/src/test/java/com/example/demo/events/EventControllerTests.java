@@ -146,6 +146,12 @@ public class EventControllerTests extends BaseControllerTest {
     private String getAccessToken() throws Exception {
         String username = appProperties.getUserUsername();
         String password = appProperties.getUserPassword();
+        Account account = Account.builder()
+                .email(username)
+                .password(password)
+                .roles(new HashSet<>(Arrays.asList(AccountRole.ADMIN, AccountRole.USER)))
+                .build();
+        this.accountService.saveAccount(account);
 
         String clientId = appProperties.getClientId();
         String clientSecret = appProperties.getClientSecret();
