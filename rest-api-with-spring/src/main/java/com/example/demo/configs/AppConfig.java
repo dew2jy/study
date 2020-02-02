@@ -50,7 +50,7 @@ public class AppConfig {
                 Account user = Account.builder()
                         .email(appProperties.getUserUsername())
                         .password(appProperties.getUserPassword())
-                        .roles(new HashSet<>(Arrays.asList(AccountRole.ADMIN, AccountRole.USER)))
+                        .roles(new HashSet<>(Arrays.asList(AccountRole.USER)))
                         .build();
                 accountService.saveAccount(user);
             }
