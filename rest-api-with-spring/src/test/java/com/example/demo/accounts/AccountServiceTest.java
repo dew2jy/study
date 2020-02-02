@@ -49,7 +49,7 @@ public class AccountServiceTest {
         this.accountService.saveAccount(account);
 
         //When
-        UserDetailsService userDetailsService = (UserDetailsService)accountService;
+        UserDetailsService userDetailsService = accountService;
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
         //Then
