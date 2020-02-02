@@ -3,6 +3,7 @@ package com.example.demo.configs;
 import com.example.demo.accounts.Account;
 import com.example.demo.accounts.AccountRole;
 import com.example.demo.accounts.AccountService;
+import com.example.demo.common.AppProperties;
 import com.example.demo.common.BaseControllerTest;
 import com.example.demo.common.TestDescription;
 import org.junit.Test;
@@ -22,24 +23,18 @@ public class AuthServerConfigTest extends BaseControllerTest {
     @Autowired
     AccountService accountService;
 
+    @Autowired
+    AppProperties appProperties;
+
     @Test
     @TestDescription("인증 토큰을 발급 받는 테스트")
     public void getAuthToken() throws Exception{
-        String username = "jjeony@email.com";
-        String password = "jjeony";
-        Account account = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(new HashSet<>(Arrays.asList(AccountRole.ADMIN, AccountRole.USER)))
-                .build();
-        this.accountService.saveAccount(account);
-
-        String clientId = "myApp";
-        String clientSecret = "pass";
+        String clientId = appProperties.getClientId();
+        String clientSecret = appProperties.getClientSecret();
         this.mockMvc.perform(post("/oauth/token")
                         .with(httpBasic(clientId, clientSecret))
-                        .param("username", username)
-                        .param("password", password)
+                        .param("username", appProperties.getUserUsername())
+                        .param("password", appProperties.getUserPassword())
                         .param("grant_type", "password"))
                 .andDo(print())
                 .andExpect(status().isOk())

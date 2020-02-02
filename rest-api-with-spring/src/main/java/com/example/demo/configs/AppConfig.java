@@ -3,6 +3,7 @@ package com.example.demo.configs;
 import com.example.demo.accounts.Account;
 import com.example.demo.accounts.AccountRole;
 import com.example.demo.accounts.AccountService;
+import com.example.demo.common.AppProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -34,14 +35,24 @@ public class AppConfig {
             @Autowired
             AccountService accountService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
             public void run(ApplicationArguments args) throws Exception {
-                Account account = Account.builder()
-                        .email("keesun@email.com")
-                        .password("keesun")
+                Account admin = Account.builder()
+                        .email(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
                         .roles(new HashSet<>(Arrays.asList(AccountRole.ADMIN, AccountRole.USER)))
                         .build();
-                accountService.saveAccount(account);
+                accountService.saveAccount(admin);
+
+                Account user = Account.builder()
+                        .email(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
+                        .roles(new HashSet<>(Arrays.asList(AccountRole.ADMIN, AccountRole.USER)))
+                        .build();
+                accountService.saveAccount(user);
             }
         };
     }

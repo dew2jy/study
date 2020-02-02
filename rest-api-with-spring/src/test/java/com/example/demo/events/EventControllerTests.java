@@ -4,6 +4,7 @@ import com.example.demo.accounts.Account;
 import com.example.demo.accounts.AccountRepository;
 import com.example.demo.accounts.AccountRole;
 import com.example.demo.accounts.AccountService;
+import com.example.demo.common.AppProperties;
 import com.example.demo.common.BaseControllerTest;
 import com.example.demo.common.TestDescription;
 import lombok.var;
@@ -42,6 +43,9 @@ public class EventControllerTests extends BaseControllerTest {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    AppProperties appProperties;
 
     @Before
     public void setUp() {
@@ -140,17 +144,11 @@ public class EventControllerTests extends BaseControllerTest {
     }
 
     private String getAccessToken() throws Exception {
-        String username = "jjeony@email.com";
-        String password = "jjeony";
-        Account account = Account.builder()
-                .email(username)
-                .password(password)
-                .roles(new HashSet<>(Arrays.asList(AccountRole.ADMIN, AccountRole.USER)))
-                .build();
-        this.accountService.saveAccount(account);
+        String username = appProperties.getUserUsername();
+        String password = appProperties.getUserPassword();
 
-        String clientId = "myApp";
-        String clientSecret = "pass";
+        String clientId = appProperties.getClientId();
+        String clientSecret = appProperties.getClientSecret();
         ResultActions perform = this.mockMvc.perform(post("/oauth/token")
                 .with(httpBasic(clientId, clientSecret))
                 .param("username", username)
